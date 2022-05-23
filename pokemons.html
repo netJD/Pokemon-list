@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Pokemons list</title>
+</head>
+    <body>
+    <h1>Pokemons list</h1>
+    
+    <p id="total"></p>
+<ul id="pokemons"></ul>
+
+<p id="demo"></p>
+
+<script>
+
+function openPokemon(input) { 
+	document.getElementById("demo").innerHTML = "";	
+	
+}
+
+function create(data) {
+	console.log(data)
+	
+	let text = "";
+	
+
+	for (let i = 0; i < data.results.length; i++) {
+	 text += '<button onclick="openPokemon(\'' + data.results[i].url + '\')">' + data.results[i].name + '</button> <br>';
+	 
+openPokemon()
+	}
+	console.log(text)
+
+	document.getElementById("demo").innerHTML = text;	
+	document.getElementById("total").innerHTML = "Total Pokemons: " + data.count;	
+}
+
+fetch('https://pokeapi.co/api/v2/pokemon/?limit=100000&offset=0')
+  .then(response => response.json())
+  .then((data) => create(data))  
+  
+</script>
+
+    </body>
+</html>
