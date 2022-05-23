@@ -1,0 +1,31 @@
+<h1>Pokemons</h1>
+<ul id="pokemons"></ul>
+
+<script>
+  const ul = document.getElementById('pokemons');
+  const list = document.createDocumentFragment();
+  const url = 'https://pokeapi.co/api/v2/pokemon/';
+
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      let pokemons = data;
+
+      pokemons.map(function(pokemon) {
+        let li = document.createElement('li');
+        let name = document.createElement('h2');
+
+        name.innerHTML = `${pokemon.name}`;
+
+        li.appendChild(name);
+        list.appendChild(li);
+      });
+    }).
+    .catch(function(error) {
+      console.log(error);
+    });
+
+  ul.appendChild(list);
+</script>
