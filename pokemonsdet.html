@@ -22,6 +22,9 @@
 
     <p id="link" ></p>
 
+	<h1>Pokemons Stats</h1>
+
+	<p id="typestat"></p>
 
     <script>
 
@@ -38,6 +41,17 @@
 			document.getElementById("height").innerHTML = 'Height: ' + data.height;
 			document.getElementById("weight").innerHTML = 'Weight: ' + data.weight;
 			document.getElementById("abilities").innerHTML = 'Ability: ' + data.abilities[0].ability.name;
+
+			let text = "";
+
+
+			for (let i = 0; i < data.stats.length; i++) {
+//				text += '<button onclick="openPokemon(\'' + data2.results[i].url + '\')">' + data2.results[i].name + '</button> <br>';
+				text += '<p>' + data.stats[i].stat.name + ': '+ data.stats[i].base_stat + '</p>';
+			}
+
+			document.getElementById("typestat").innerHTML = text;
+
 		}
 
         document.getElementById("link").innerHTML = localStorage.getItem("link");
