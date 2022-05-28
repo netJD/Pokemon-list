@@ -8,16 +8,42 @@
 <body>
     <h1>Pokemons details</h1>
 
+    <p id="id"></p>
 
-    <p id="link"></p>
+	<p id="name"></p>
+	
+	<p id="height">Height: </p>
+
+	<p id="weight">Weight: </p>
+
+	<p id="category">Category: </p>
+
+	<p id="abilities">Abilities</p>
+
+    <p id="link" ></p>
 
 
     <script>
 
+		function create(data) {
+			console.log(data)
+			console.log(data.id)
+			console.log(data.name)
+			console.log(data.height)
+			console.log(data.weight)
+			console.log(data.abilities[0].ability.name)
+
+			document.getElementById("id").innerHTML = 'Id: ' + data.id;
+			document.getElementById("name").innerHTML = 'Name: ' + data.name;
+			document.getElementById("height").innerHTML = 'Height: ' + data.height;
+			document.getElementById("weight").innerHTML = 'Weight: ' + data.weight;
+			document.getElementById("abilities").innerHTML = 'Ability: ' + data.abilities[0].ability.name;
+		}
 
         document.getElementById("link").innerHTML = localStorage.getItem("link");
+        document.getElementById("link").style.visibility = "hidden";
 
-		fetch('https://pokeapi.co/api/v2/pokemon/?limit=100000&offset=0')
+		fetch(localStorage.getItem("link"))
 			.then(response => response.json())
 			.then((data) => create(data))
 
