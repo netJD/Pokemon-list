@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Pokemons details compare</title>
+</head>
+
+<body>
+    <h1>Pokemons details compare</h1>
+
+
+    <p id="id0"></p>
+    <p id="id1"></p>
+
+    <p id="name0"></p>
+    <p id="name1"></p>
+
+    <p id="height0">Height: </p>
+    <p id="height1">Height: </p>
+
+    <p id="weight0">Weight: </p>
+    <p id="weight1">Weight: </p>
+
+    <p id="category0">Category: </p>
+    <p id="category1">Category: </p>
+
+    <p id="abilities0">Abilities</p>
+    <p id="abilities1">Abilities</p>
+
+    <p id="link"></p>
+
+    <h1>Pokemons Stats compare</h1>
+
+    <p id="hp0"></p>
+    <p id="hp1"></p>
+    <p id="attack0"></p>
+    <p id="attack1"></p>
+    <p id="defense0"></p>
+    <p id="defense1"></p>
+    <p id="specialattack0"></p>
+    <p id="specialattack1"></p>
+    <p id="specialdefense0"></p>
+    <p id="specialdefense1"></p>
+    <p id="speed0"></p>
+    <p id="speed1"></p>
+
+    <script>
+
+        function create(data, itemnum) {
+            console.log(data, itemnum)
+            console.log(data.id, itemnum)
+            //            console.log(data.name)
+            //            console.log(data.height)
+            //            console.log(data.weight)
+            //            console.log(data.abilities[0].ability.name)
+
+            document.getElementById("id" + itemnum).innerHTML = 'Id: ' + data.id;
+            document.getElementById("name" + itemnum).innerHTML = 'Name: ' + data.name;
+            document.getElementById("height" + itemnum).innerHTML = 'Height: ' + data.height;
+            document.getElementById("weight" + itemnum).innerHTML = 'Weight: ' + data.weight;
+            document.getElementById("abilities" + itemnum).innerHTML = 'Ability: ' + data.abilities[0].ability.name;
+
+            let text = "";
+
+
+            for (let i = 0; i < data.stats.length; i++) {
+                document.getElementById("hp" + itemnum).innerHTML = 'Hp: ' + data.stats[i].base_stat;
+                document.getElementById("attack" + itemnum).innerHTML = 'attack: ' + data.stats[i].base_stat;
+                document.getElementById("defense" + itemnum).innerHTML = 'defense: ' + data.stats[i].base_stat;
+                document.getElementById("specialattack" + itemnum).innerHTML = 'specialattack: ' + data.stats[i].base_stat;
+                document.getElementById("specialdefense" + itemnum).innerHTML = 'specialdefense: ' + data.stats[i].base_stat;
+                document.getElementById("speed" + itemnum).innerHTML = 'speed: ' + data.stats[i].base_stat;
+            }
+
+
+        }
+
+
+        document.getElementById("link").innerHTML = localStorage.getItem("link");
+//        document.getElementById("link").style.visibility = "hidden";
+
+console.log(localStorage.getItem("link"))
+//console.log(localStorage.getItem("link2"))
+
+ //       let dirurl = ["https://pokeapi.co/api/v2/pokemon/1/", "https://pokeapi.co/api/v2/pokemon/2/"];
+        let dirurl = [localStorage.getItem("link"), "https://pokeapi.co/api/v2/pokemon/2/"];
+        for (let i = 0; i < dirurl.length; i++) {
+            fetch(dirurl[i])
+                .then(response => response.json())
+                .then((data) => create(data, i))
+        }
+
+    </script>
+
+</body>
+
+</html>
