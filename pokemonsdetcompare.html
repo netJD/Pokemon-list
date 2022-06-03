@@ -2,12 +2,27 @@
 <html lang="en">
 
 <head>
-    <title>Pokemons details compare</title>
+    <title>Pokemons details and statistics compare</title>
 </head>
 
 <body>
-    <h1>Pokemons details compare</h1>
 
+    <h1>Pokemons details and statistics compare: </h1>
+    <label for="pokemon0">Choose pokemon 1:</label>
+
+    <select name="pokemon0" id="pokemons0">
+        <option value=""></option>
+    </select>
+
+
+    <label for="pokemon1">Choose pokemon 2:</label>
+    <select name="pokemon1" id="pokemons1">
+        <option value=""></option>
+    </select>
+
+    <button onclick="comparepokemons()">Compare</button>
+
+    <h1 id="details"></h1>
 
     <p id="id0"></p>
     <p id="id1"></p>
@@ -15,21 +30,21 @@
     <p id="name0"></p>
     <p id="name1"></p>
 
-    <p id="height0">Height: </p>
-    <p id="height1">Height: </p>
+    <p id="height0"></p>
+    <p id="height1"></p>
 
-    <p id="weight0">Weight: </p>
-    <p id="weight1">Weight: </p>
+    <p id="weight0"></p>
+    <p id="weight1"></p>
 
-    <p id="category0">Category: </p>
-    <p id="category1">Category: </p>
+    <p id="category0"></p>
+    <p id="category1"></p>
 
-    <p id="abilities0">Abilities</p>
-    <p id="abilities1">Abilities</p>
+    <p id="abilities0"></p>
+    <p id="abilities1"></p>
 
     <p id="link"></p>
 
-    <h1>Pokemons Stats compare</h1>
+    <h1 id="statistics"></h1>
 
     <p id="hp0"></p>
     <p id="hp1"></p>
@@ -45,15 +60,38 @@
     <p id="speed1"></p>
 
     <script>
+        var dirurl = [localStorage.getItem("link"), localStorage.getItem("link2")];
+
+        function comparepokemons() {
+            var sel0 = document.getElementById('pokemons0');
+            var sel1 = document.getElementById('pokemons1');
+            dirurl = [sel0.value, sel1.value];
+            fetchlinks();
+
+        }
+
+        function createlist(datalist) {
+            console.log(datalist)
+
+            let text = "";
+            let text2 = "";
+
+
+            for (let i = 0; i < datalist.results.length; i++) {
+                text += '<option value="' + datalist.results[i].url + '">' + datalist.results[i].name + '</option>';
+                text2 += '<option value="' + datalist.results[i].url + '">' + datalist.results[i].name + '</option>';
+            }
+
+            document.getElementById("pokemons0").innerHTML = text;
+            document.getElementById("pokemons1").innerHTML = text;
+
+        }
+
 
         function create(data, itemnum) {
-            console.log(data, itemnum)
-            console.log(data.id, itemnum)
-            //            console.log(data.name)
-            //            console.log(data.height)
-            //            console.log(data.weight)
-            //            console.log(data.abilities[0].ability.name)
 
+
+            document.getElementById("details").innerHTML = 'Pokemons details: ';
             document.getElementById("id" + itemnum).innerHTML = 'Id: ' + data.id;
             document.getElementById("name" + itemnum).innerHTML = 'Name: ' + data.name;
             document.getElementById("height" + itemnum).innerHTML = 'Height: ' + data.height;
@@ -63,6 +101,7 @@
             let text = "";
 
 
+            document.getElementById("statistics").innerHTML = 'Pokemons statistics: ';
             for (let i = 0; i < data.stats.length; i++) {
                 document.getElementById("hp" + itemnum).innerHTML = 'Hp: ' + data.stats[i].base_stat;
                 document.getElementById("attack" + itemnum).innerHTML = 'attack: ' + data.stats[i].base_stat;
@@ -76,18 +115,16 @@
         }
 
 
-        document.getElementById("link").innerHTML = localStorage.getItem("link");
-//        document.getElementById("link").style.visibility = "hidden";
+        fetch('https://pokeapi.co/api/v2/pokemon/?limit=100000&offset=0')
+            .then(response => response.json())
+            .then((datalist) => createlist(datalist))
 
-console.log(localStorage.getItem("link"))
-//console.log(localStorage.getItem("link2"))
-
- //       let dirurl = ["https://pokeapi.co/api/v2/pokemon/1/", "https://pokeapi.co/api/v2/pokemon/2/"];
-        let dirurl = [localStorage.getItem("link"), "https://pokeapi.co/api/v2/pokemon/2/"];
-        for (let i = 0; i < dirurl.length; i++) {
-            fetch(dirurl[i])
-                .then(response => response.json())
-                .then((data) => create(data, i))
+        function fetchlinks() {
+            for (let i = 0; i < dirurl.length; i++) {
+                fetch(dirurl[i])
+                    .then(response => response.json())
+                    .then((data) => create(data, i))
+            }
         }
 
     </script>
