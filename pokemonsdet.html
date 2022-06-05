@@ -2,16 +2,24 @@
 <html lang="en">
 
 <head>
-    <title>Pokemons details</title>
+	<title>Pokemons details and statistics</title>
 </head>
 
 <body>
-    <h1>Pokemons details</h1>
+	<h1 style="display:inline">Pokemons details</h1>
+	<button id="btnaddfavourite" onclick="addfavourite()">Add to favourite</button>
+	<button onclick="viewAllfavourite()">View all favourite</button>
+	<button onclick="clearAllfavourite()">Clear all favourite</button>
+	<button onclick="window.location.href = 'pokemons.html'">back</button>
 
-    <p id="id"></p>
+	<p id="favlist"></p>
+
+	<p id="favouritepokemon"></p>
+
+	<p id="id"></p>
 
 	<p id="name"></p>
-	
+
 	<p id="height">Height: </p>
 
 	<p id="weight">Weight: </p>
@@ -20,15 +28,70 @@
 
 	<p id="abilities">Abilities</p>
 
-    <p id="link" ></p>
+	<p id="link"></p>
 
 	<h1>Pokemons Stats</h1>
 
 	<p id="typestat"></p>
 
-    <script>
+	<script>
+		function back() {
+			window.location.href = "pokemons.html";
+		}
+
+		function clearAllfavourite() {
+			var pokemonsid = [];
+			localStorage.setItem("favpokemonsid", JSON.stringify(pokemonsid));
+			var storedPokemonsid = JSON.parse(localStorage.getItem("favpokemonsid"));
+			document.getElementById("favlist").innerHTML = 'Favorite pokemons ID: ' + (storedPokemonsid);
+			localStorage.setItem("favouritespokemonlist", "");
+			document.getElementById("btnaddfavourite").disabled = false;
+			start();
+		}
+
+
+		function viewAllfavourite() {
+			var storedPokemonsid = JSON.parse(localStorage.getItem("favpokemonsid"));
+			document.getElementById("favlist").innerHTML = 'Favorite pokemons ID: ' + (storedPokemonsid);
+		}
+
+		function addfavourite() {
+			let favouritepoke = "";
+			let getfavouritepoke = localStorage.getItem("favouritespokemonlist");
+
+
+			fetch(localStorage.getItem("link"))
+				.then(response => response.json())
+				.then((data2) => create2(data2))
+			function create2(data2) {
+
+				var storedPokemonsid = JSON.parse(localStorage.getItem("favpokemonsid"));
+
+				var pokemonsidxx = [];
+				pokemonsidxx = storedPokemonsid;
+
+				let pos = 0;
+				if (storedPokemonsid.length < 0) {
+					pos = 0;
+				}
+				if (storedPokemonsid.length > 0) {
+					pos = storedPokemonsid.length;
+				}
+				pokemonsidxx[pos] = "" + data2.id;
+
+				localStorage.setItem("favpokemonsid", JSON.stringify(pokemonsidxx));
+
+			}
+			start();
+
+		}
+
 
 		function create(data) {
+			let favouritepoke = localStorage.getItem("favouritespokemonlist")
+			let favorate = "NO";
+			var storedPokemonsid = JSON.parse(localStorage.getItem("favpokemonsid"));
+
 			console.log(data)
 			console.log(data.id)
 			console.log(data.name)
@@ -36,6 +99,23 @@
 			console.log(data.weight)
 			console.log(data.abilities[0].ability.name)
 
+
+			for (let i = 0; i < storedPokemonsid.length; i++) {
+				if (storedPokemonsid[i] === "" + data.id) {
+					favorate = "YES";
+					document.getElementById("btnaddfavourite").disabled = true;
+					{ break; }
+				}
+				else {
+					favorate = "NO";
+				};
+
+			}
+
+
+
+
+			document.getElementById("favouritepokemon").innerHTML = 'Favorate: ' + favorate;
 			document.getElementById("id").innerHTML = 'Id: ' + data.id;
 			document.getElementById("name").innerHTML = 'Name: ' + data.name;
 			document.getElementById("height").innerHTML = 'Height: ' + data.height;
@@ -46,22 +126,23 @@
 
 
 			for (let i = 0; i < data.stats.length; i++) {
-//				text += '<button onclick="openPokemon(\'' + data2.results[i].url + '\')">' + data2.results[i].name + '</button> <br>';
-				text += '<p>' + data.stats[i].stat.name + ': '+ data.stats[i].base_stat + '</p>';
+				text += '<p>' + data.stats[i].stat.name + ': ' + data.stats[i].base_stat + '</p>';
 			}
 
 			document.getElementById("typestat").innerHTML = text;
 
 		}
 
-        document.getElementById("link").innerHTML = localStorage.getItem("link");
-        document.getElementById("link").style.visibility = "hidden";
 
-		fetch(localStorage.getItem("link"))
-			.then(response => response.json())
-			.then((data) => create(data))
+		function start() {
 
-    </script>
+			fetch(localStorage.getItem("link"))
+				.then(response => response.json())
+				.then((data) => create(data))
+
+		}
+		start();
+	</script>
 
 </body>
 
