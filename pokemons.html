@@ -3,23 +3,45 @@
 
 <head>
 	<title>Pokemons list</title>
+	<link rel="stylesheet" type="text/css" href="stylepokemons.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
-	<h1 style="display:inline">Pokemons list</h1>
-	<button onclick="window.location.href = 'pokemonsdetcompare.html'">Compare 2 Pokemons</button>
+	<h1 style="position: relative; top:20px; left:10px; margin-bottom: -10px;">Pokemons List</h1>
+	<button style="position: relative;	left: 260px; top:-7px;" type="button" class="btn btn-default"
+		onclick="window.location.href = 'pokemonsdetcompare.html'">Compare 2 Pokemons</button>
+	<p id="total" style="position: relative; left:10px; margin-bottom: 10px;"></p>
 
-	<p id="total"></p>
-	<ul id="pokemons"></ul>
+	<input type="text" id="myInput" onkeyup="myFunctionsearch()" placeholder="Search for names.."
+		title="Type in a name">
 
-	<p id="demo"></p>
+	<ul id="myUL"></ul>
 
 	<script>
-
+		function myFunctionsearch() {
+			var input, filter, ul, li, a, i, txtValue;
+			input = document.getElementById("myInput");
+			filter = input.value.toUpperCase();
+			ul = document.getElementById("myUL");
+			li = ul.getElementsByTagName("li");
+			for (i = 0; i < li.length; i++) {
+				a = li[i].getElementsByTagName("a")[0];
+				txtValue = a.textContent || a.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+					li[i].style.display = "";
+				} else {
+					li[i].style.display = "none";
+				}
+			}
+		}
 
 		function openPokemon(input) {
 			console.log(input)
-			document.getElementById("demo").innerHTML = input;
+			document.getElementById("myUL").innerHTML = input;
 			localStorage.setItem("link", input);
 			window.location.href = "pokemonsdet.html";
 
@@ -29,13 +51,14 @@
 			console.log(data)
 
 			let text = "";
+			let text2 = "";
 
 
 			for (let i = 0; i < data.results.length; i++) {
-				text += '<button onclick="openPokemon(\'' + data.results[i].url + '\')">' + data.results[i].name + '</button> <br>';
+				text += '<li><a onclick="openPokemon(\'' + data.results[i].url + '\')">' + data.results[i].name + '</a></li>';
 			}
 
-			document.getElementById("demo").innerHTML = text;
+			document.getElementById("myUL").innerHTML = text;
 			document.getElementById("total").innerHTML = "Total Pokemons: " + data.count;
 
 		}
