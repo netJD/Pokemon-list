@@ -11,9 +11,15 @@
 </head>
 
 <body>
-	<h1 style="position: relative; top:20px; left:10px; margin-bottom: -10px;">Pokemons List</h1>
-	<button style="position: relative;	left: 260px; top:-7px;" type="button" class="btn btn-default"
-		onclick="window.location.href = 'pokemonsdetcompare.html'">Compare 2 Pokemons</button>
+	<div style="position: relative;	top:10px; left: 10px; ">
+		<button type="button" class="btn btn-default" onclick="window.location.href = 'pokemonsdetcompare.html'">Compare
+			2 Pokemons</button>
+	</div>
+
+	<div style="position: relative; margin-left: 10px; margin-right: 800px;  margin-top: 5px;  " class="row">
+		<h1>Pokemons List</h1>
+	</div>
+
 	<p id="total" style="position: relative; left:10px; margin-bottom: 10px;"></p>
 
 	<input type="text" id="myInput" onkeyup="myFunctionsearch()" placeholder="Search for names.."
