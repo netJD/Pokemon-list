@@ -3,10 +3,15 @@
 
 <head>
     <title>Pokemons details and statistics compare</title>
+    <link rel="stylesheet" type="text/css" href="stylepokemonsdet.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
-
+    <div style="position: relative;	left: 10px; top:10px;">
     <h1>Pokemons details and statistics compare: </h1>
     <label for="pokemon0">Choose pokemon 1:</label>
 
@@ -20,49 +25,66 @@
         <option value=""></option>
     </select>
 
-    <button onclick="comparepokemons()">Compare</button>
-	<button onclick="window.location.href = 'pokemons.html'">Back</button>
+    <button type="button" class="btn btn-default" onclick="comparepokemons()">Compare</button>
+    <button type="button" class="btn btn-default" onclick="window.location.href = 'pokemons.html'">Back</button>
+    </div>
 
-    <h1 id="details"></h1>
 
-    <p id="id0"></p>
-    <p id="id1"></p>
+    <div id="comptable" style="position: relative; margin-left: 10px; margin-right: 10px; margin-top: 20px; display:none;" class="row">
+        <div class="column">
+            <table>
+                <tr>
+                    <th id="id0"></th>
+                </tr>
+                <tr>
+                    <th id="name0"></th>
+                </tr>
+                <tr>
+                    <th id="height0"></th>
+                </tr>
+                <tr>
+                    <th id="weight0"></th>
+                </tr>
+                <tr>
+                    <th id="abilities0"></th>
+                </tr>
+            </table>
+            <table id="typestat0">
+            </table>
+        </div>
+        <div class="column">
+            <table>
+                <tr>
+                    <th id="id1"></th>
+                </tr>
+                <tr>
+                    <th id="name1"></th>
+                </tr>
+                <tr>
+                    <th id="height1"></th>
+                </tr>
+                <tr>
+                    <th id="weight1"></th>
+                </tr>
+                <tr>
+                    <th id="abilities1"></th>
+                </tr>
+            </table>
+            <table id="typestat1">
+            </table>
+        </div>
+    </div>
 
-    <p id="name0"></p>
-    <p id="name1"></p>
-
-    <p id="height0"></p>
-    <p id="height1"></p>
-
-    <p id="weight0"></p>
-    <p id="weight1"></p>
-
-    <p id="category0"></p>
-    <p id="category1"></p>
-
-    <p id="abilities0"></p>
-    <p id="abilities1"></p>
 
     <p id="link"></p>
 
-    <h1 id="statistics"></h1>
-
-    <p id="hp0"></p>
-    <p id="hp1"></p>
-    <p id="attack0"></p>
-    <p id="attack1"></p>
-    <p id="defense0"></p>
-    <p id="defense1"></p>
-    <p id="specialattack0"></p>
-    <p id="specialattack1"></p>
-    <p id="specialdefense0"></p>
-    <p id="specialdefense1"></p>
-    <p id="speed0"></p>
-    <p id="speed1"></p>
 
     <script>
 
         function comparepokemons() {
+            
+            document.getElementById("comptable").style.display = "block";
+
             var sel0 = document.getElementById('pokemons0');
             var sel1 = document.getElementById('pokemons1');
             dirurl = [sel0.value, sel1.value];
@@ -91,7 +113,6 @@
         function create(data, itemnum) {
 
 
-            document.getElementById("details").innerHTML = 'Pokemons details: ';
             document.getElementById("id" + itemnum).innerHTML = 'Id: ' + data.id;
             document.getElementById("name" + itemnum).innerHTML = 'Name: ' + data.name;
             document.getElementById("height" + itemnum).innerHTML = 'Height: ' + data.height;
@@ -100,16 +121,10 @@
 
             let text = "";
 
-
-            document.getElementById("statistics").innerHTML = 'Pokemons statistics: ';
             for (let i = 0; i < data.stats.length; i++) {
-                document.getElementById("hp" + itemnum).innerHTML = 'Hp: ' + data.stats[i].base_stat;
-                document.getElementById("attack" + itemnum).innerHTML = 'attack: ' + data.stats[i].base_stat;
-                document.getElementById("defense" + itemnum).innerHTML = 'defense: ' + data.stats[i].base_stat;
-                document.getElementById("specialattack" + itemnum).innerHTML = 'specialattack: ' + data.stats[i].base_stat;
-                document.getElementById("specialdefense" + itemnum).innerHTML = 'specialdefense: ' + data.stats[i].base_stat;
-                document.getElementById("speed" + itemnum).innerHTML = 'speed: ' + data.stats[i].base_stat;
+				text += '<tr><th>' + data.stats[i].stat.name + ': ' + data.stats[i].base_stat + '</th></tr>';
             }
+            document.getElementById("typestat" + itemnum).innerHTML = text;
 
 
         }
